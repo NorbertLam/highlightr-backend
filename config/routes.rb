@@ -5,7 +5,7 @@ Rails.application.routes.draw do
       post "/signup", to: "users#create"
       get "/profile/:id", to: "users#show"
       get "/streamers", to: "streamers#index"
-      get "/streamers/:display_name", to: "streamers#show"
+      get "/streamers/:login", to: "streamers#show"
     end
   end
 end
