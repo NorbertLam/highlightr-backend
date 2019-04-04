@@ -6,7 +6,7 @@ class Api::V1::StreamersController < ApplicationController
   end
 
   def show
-    @streamer = Streamer.find(params[:id])
+    @streamer = Streamer.find_by(display_name: params[:display_name])
     render json: @streamer
   end
 
