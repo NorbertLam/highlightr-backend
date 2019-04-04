@@ -1,5 +1,10 @@
 class Api::V1::StreamersController < ApplicationController
 
+  def index
+    @streamers = Streamer.all
+    render json: @streamers
+  end
+
   def show
     @streamer = Streamer.find(params[:id])
     render json: @streamer
