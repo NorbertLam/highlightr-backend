@@ -25,7 +25,7 @@ class ApplicationController < ActionController::API
 
   def current_user
     if decode_token
-      user_id = decode_token['user_id']
+      user_id = decode_token[0]['user_id']
       @user = User.find_by(id: user_id)
     end
   end
