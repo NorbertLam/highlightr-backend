@@ -3,6 +3,7 @@ require 'dotenv/load'
 require 'json'
 
 class Api::V1::StreamersController < ApplicationController
+  skip_before_action :authorized
 
   def index
     @streamers = Streamer.all
