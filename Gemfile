@@ -49,3 +49,9 @@ gem "jwt", "~> 2.1"
 gem "active_model_serializers", "~> 0.10.9"
 
 gem "faker", "~> 1.9"
+
+gem 'dotenv'
+
+gem 'rest-client'
+
+gem 'json'
