@@ -16,6 +16,7 @@ ActiveRecord::Schema.define(version: 2019_04_08_183917) do
   enable_extension "plpgsql"
 
   create_table "highlights", force: :cascade do |t|
+    t.integer "vod_id"
     t.string "start"
     t.string "end"
     t.datetime "created_at", null: false
@@ -46,7 +47,6 @@ ActiveRecord::Schema.define(version: 2019_04_08_183917) do
 
   create_table "vods", force: :cascade do |t|
     t.integer "streamer_id"
-    t.integer "highlight_id"
     t.integer "vod_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

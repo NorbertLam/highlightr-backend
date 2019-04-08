@@ -10,6 +10,9 @@ Rails.application.routes.draw do
       
       get "/streamers", to: "streamers#index"
       get "/streamers/:login", to: "streamers#show"
+
+      post "/vod", to: "vods#create"
+      get "/vod", to: "vods#show"
     end
   end
 end
