@@ -1,3 +1,3 @@
 class HighlightSerializer < ActiveModel::Serializer
-  attributes :start, :end
+  attributes :vod_id, :start, :end, :twitch_id
 end

@@ -2,6 +2,7 @@ class Api::V1::UsersController < ApplicationController
   skip_before_action :authorized, only: [:create]
   
   def create
+    debugger
     @user = User.create(user_params)
     @user.email = @user.email.downcase
     @user.save

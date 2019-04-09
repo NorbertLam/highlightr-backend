@@ -1,4 +1,5 @@
 class VodSerializer < ActiveModel::Serializer
-  attributes :streamer_id, :vod_id
+  attributes :streamer_id, :twitch_id
 
+  has_many :highlights
 end

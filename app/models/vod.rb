@@ -1,6 +1,6 @@
 class Vod < ApplicationRecord
   belongs_to :streamer
-  has_many :hilights
+  has_many :highlights
 
-  validates :vod_id, uniqueness: true
+  validates :twitch_id, uniqueness: true
 end

@@ -12,7 +12,11 @@ Rails.application.routes.draw do
       get "/streamers/:login", to: "streamers#show"
 
       post "/vod", to: "vods#create"
-      get "/vod", to: "vods#show"
+      get "/vod/:twitch_id", to: "vods#show"
+
+      post "/highlight", to: "highlights#create"
+      get "/highlight/:id", to: "highlights#show"
+
     end
   end
 end
