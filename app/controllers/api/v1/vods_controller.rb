@@ -14,6 +14,6 @@ class Api::V1::VodsController < ApplicationController
   private
 
   def vod_params
-    params.permit(:streamer_id, :twitch_id)
+    params.permit(:streamer_id, :twitch_id, :login)
   end
 end
