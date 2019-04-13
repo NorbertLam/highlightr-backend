@@ -16,9 +16,9 @@ class Api::V1::AuthController < ApplicationController
 
   def show
     jwt = request.headers['Authorization']
-    id = JWT.decode(jwt, ENV['SECRET'])
-    @user = User.find(id)
-    render json: {user: @user}
+    id = JWT.decode(jwt, ENV['SECRET'])[0]['user_id']
+    @user = User.find_by(id: id)
+    render json: { user: UserSerializer.new(@user) }
   end
  
   private

@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_03_143440) do
+ActiveRecord::Schema.define(version: 2019_04_10_135416) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "highlights", force: :cascade do |t|
+    t.integer "vod_id"
+    t.integer "twitch_id"
+    t.string "start"
+    t.string "end"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "streamers", force: :cascade do |t|
     t.string "twitch_id"
@@ -35,6 +44,14 @@ ActiveRecord::Schema.define(version: 2019_04_03_143440) do
     t.string "profile_picture"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "vods", force: :cascade do |t|
+    t.integer "streamer_id"
+    t.integer "twitch_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "login"
   end
 
 end
