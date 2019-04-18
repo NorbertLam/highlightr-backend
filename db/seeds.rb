@@ -21,6 +21,6 @@ def createStreamers(streamerData)
     )
 end
   
-streamersArr = ['shroud', 'imaqtpie', 'sodapoppin', 'pokimane', 'riotgames', 'jakenbakelive']
+streamersArr = ['shroud', 'imaqtpie', 'sodapoppin', 'pokimane', 'riotgames', 'jakenbakelive', 'rush', 'mahjon']
 
 getStreamers(streamersArr)
