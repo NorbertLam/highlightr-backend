@@ -1,7 +1,6 @@
 # Highlightr Backend
 
-Ruby on Rails backend for Highlightr. Persists user information through sign up and log in. Handles streamers, VoDs, and highlights.
-Includes a python script used to parse twitch chat logs and analyzed for "highlights".
+Ruby on Rails backend for Highlightr. User information is persisted through a sign up process, allowing users to log in and customize their experience. Uses JWT as an eimplmentation of auth. Handles streamers, VoDs, and VoD highlights. A Python3 script parses twitch chat logs and analyzes them for "highlights".
 
 ### Installation and Usage
 ```
@@ -11,7 +10,7 @@ rails s
 ```
 
 ### Environment Variables
-Create .env file containing the following.
+Create a .env file containing the following.
 ```
 export KEY=YOUR TWITCH CLIENT ID
 export SECRET=YOUR SECRET FOR JWT
@@ -24,11 +23,11 @@ Vod belongs to Streamer, has many highlights
 Highlight belongs to Vod
 
 User
- - email
- - password
- - username
- - first_name
- - profile_picture
+  - email
+  - password
+  - username
+  - first_name
+  - profile_picture
 
 Streamer
   - twitch_id
@@ -45,30 +44,29 @@ Vod
   - login
 
 Highlight
- - vod_id
- - twitch_id
- - start
- - end
+  - vod_id
+  - twitch_id
+  - start
+  - end
 ```
 
 ### Routes
 ```
-             api_v1_login POST /api/v1/login(.:format)                                                                  api/v1/auth#create
-      api_v1_current_user GET  /api/v1/current_user(.:format)                                                           api/v1/auth#show
-            api_v1_signup POST /api/v1/signup(.:format)                                                                 api/v1/users#create
-                   api_v1 GET  /api/v1/profile/:id(.:format)                                                            api/v1/users#show
-         api_v1_streamers GET  /api/v1/streamers(.:format)                                                              api/v1/streamers#index
-                          GET  /api/v1/streamers/:login(.:format)                                                       api/v1/streamers#show
-               api_v1_vod POST /api/v1/vod(.:format)                                                                    api/v1/vods#create
-                          GET  /api/v1/vod/:twitch_id(.:format)                                                         api/v1/vods#show
-         api_v1_highlight POST /api/v1/highlight(.:format)                                                              api/v1/highlights#create
-                          GET  /api/v1/highlight/:id(.:format)                                                          api/v1/highlights#show
+             api_v1_login POST /api/v1/login                                                                  api/v1/auth#create
+      api_v1_current_user GET  /api/v1/current_user                                                           api/v1/auth#show
+            api_v1_signup POST /api/v1/signup                                                                 api/v1/users#create
+                   api_v1 GET  /api/v1/profile/:id                                                            api/v1/users#show
+         api_v1_streamers GET  /api/v1/streamers                                                              api/v1/streamers#index
+                          GET  /api/v1/streamers/:login                                                       api/v1/streamers#show
+               api_v1_vod POST /api/v1/vod                                                                    api/v1/vods#create
+                          GET  /api/v1/vod/:twitch_id                                                         api/v1/vods#show
+         api_v1_highlight POST /api/v1/highlight                                                              api/v1/highlights#create
+                          GET  /api/v1/highlight/:id                                                          api/v1/highlights#show
 ```
 
 # findHighlights.py
-Downloaded Twitch Chat through https://github.com/PetterKraabol/Twitch-Chat-Downloader.
-Script scans directory for .txt files named with numbers as Twitch Chat Downloader saves the logs as VodId.txt. 
-Parses each file and then sends a post request to backend server, persisting each timestamp as a highlight. 
+The Twitch Chat for a VoD is downloaded using https://github.com/PetterKraabol/Twitch-Chat-Downloader.
+findHighlights.py scans the directory for appropriate .txt files, parses each file and then sends a post request to backend server, persisting each timestamp as a highlight.
 
 ### Usage
 ```

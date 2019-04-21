@@ -97,17 +97,27 @@ def getTimeStamps(vodId, derivedData, allScores):
       addHighlightToDb(item[0], vodId)
 
 
-def addVodToDb(vod):
-  r = requests.get("https://api.twitch.tv/helix/videos?id={}".format(vod), headers={'Client-ID': os.getenv("KEY")})
+def addVodToDb(vodId):
+  r = requests.get(
+      "https://api.twitch.tv/helix/videos?id={}".format(vodId),
+      headers={'Client-ID': os.getenv("KEY")})
   displayname = r.json()['data'][0]['user_name'].lower().replace(" ", "")
-  getFromRails = requests.get("http://localhost:3000/api/v1/streamers/{}".format(displayname))
-  posting = requests.post("http://localhost:3000/api/v1/vod", data={'streamer_id': getFromRails.json()['id'], 'twitch_id': vod, 'login': displayname})
+  getFromRails = requests.get(
+      "http://localhost:3000/api/v1/streamers/{}".format(displayname))
+  posting = requests.post(
+      "http://localhost:3000/api/v1/vod",
+      data={
+          'streamer_id': getFromRails.json()['id'],
+          'twitch_id': vodId,
+          'login': displayname})
 
   return posting.json()['id']
 
 
-def addHighlightToDb(hightlight, vod_id):
-  requests.post("http://localhost:3000/api/v1/highlight", data={"start": hightlight, "vod_id": vod_id})
+def addHighlightToDb(hightlight, vodId):
+  requests.post(
+      "http://localhost:3000/api/v1/highlight",
+      data={"start": hightlight, "vod_id": vodId})
 
 
 def getHighlights(vod):
