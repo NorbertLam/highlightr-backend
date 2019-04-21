@@ -64,6 +64,21 @@ Highlight
                           GET  /api/v1/highlight/:id                                                          api/v1/highlights#show
 ```
 
+### Directory Structure
+```
+app/ - Contains controllers, models, and serializers
+  controllers/
+    api/
+      v1/ Controllers for auth, highlights, streamers, users, vods
+  models/ - Models for highlight, streamer, user, vod
+  serializers/ - Serializers for highlight, streamers, user, vod
+
+db/ - Database migration files, schema, and seed
+  migrate/ - Migrations files for creating users, streamers, highlights, and vods
+
+.env - Environment Variables
+```
+
 # findHighlights.py
 The Twitch Chat for a VoD is downloaded using https://github.com/PetterKraabol/Twitch-Chat-Downloader.
 findHighlights.py scans the directory for appropriate .txt files, parses each file and then sends a post request to backend server, persisting each timestamp as a highlight.
