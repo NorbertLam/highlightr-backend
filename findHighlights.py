@@ -2,6 +2,7 @@ import re
 import os
 from os import listdir
 import requests
+import statistics
 from collections import defaultdict
 from dotenv import load_dotenv
 
@@ -20,6 +21,7 @@ keyWords = {
     'gachigasm',
     'pepega',
     'ezclap'}
+INTERVAL_SIZE = 20 # 20 represents interval of 20 seconds
 
 
 def readFile(vodId):
@@ -49,20 +51,20 @@ def parseLine(line, chatLog):
 def parseChatLog(chatLog):
   parsedChat = []
 
-  for i in range(0, len(chatLog), 20):
-    if i + 20 > len(chatLog):
+  for i in range(0, len(chatLog), INTERVAL_SIZE):
+    if i + INTERVAL_SIZE > len(chatLog):
       break
 
     time = list(chatLog[i].keys())[0]
     count = 0
     score = 0
 
-    for k in range(i, i + 20):
+    for k in range(i, i + INTERVAL_SIZE):
       comments = list(chatLog[k].values())[0]
       count += len(comments)
       score += countLikeTerms(comments)
 
-    parsedChat.append([time, count, score])
+    parsedChat.append((time, count, score))
 
   return parsedChat
 
@@ -71,28 +73,29 @@ def countLikeTerms(comments):
   score = 0
 
   for comment in comments:
-    score += len(keyWords.intersection(set(comment.split(' '))))
+    score += len(keyWords.intersection(set(comment.split())))
 
   return score
 
-
-def calculateparsedChat(parsedChat, allScores):
-  derivedData = []
+ # Calculates slope on amount of comments between 20 second intervals.
+def calculateparsedChat(parsedChat):
+  normalizedChat = []
+  allScores = []
 
   for i in range(len(parsedChat) - 1):
     time = parsedChat[i][0]
-    deriv = (parsedChat[i + 1][1] - parsedChat[i][1]) / 20
-    score = parsedChat[i][2] / 20
+    deriv = (parsedChat[i + 1][1] - parsedChat[i][1]) / INTERVAL_SIZE
+    score = parsedChat[i][2] / INTERVAL_SIZE
     allScores.append(score)
-    derivedData.append([time, round(deriv, 2), round(score, 2)])
+    normalizedChat.append((time, round(deriv, 2), round(score, 2)))
 
-  return derivedData
+  return (normalizedChat, allScores)
 
 
-def getTimeStamps(vodId, derivedData, allScores):
-  median = sorted(allScores)[len(allScores) // 2]
+def getTimeStamps(vodId, normalizedChat, allScores):
+  median = statistics.median(allScores)
 
-  for item in derivedData:
+  for item in normalizedChat:
     if item[1] > 1 and item[2] > median:
       addHighlightToDb(item[0], vodId)
 
@@ -120,20 +123,19 @@ def addHighlightToDb(hightlight, vodId):
       data={"start": hightlight, "vod_id": vodId})
 
 
-def getHighlights(vod):
-  allScores = []
-  chatLog = readFile(vod)
+def getHighlights(vodId):
+  chatLog = readFile(vodId)
   parsedChat = parseChatLog(chatLog)
-  derivedData = calculateparsedChat(parsedChat, allScores)
-  vodId = addVodToDb(vod)
-  getTimeStamps(vodId, derivedData, allScores)
+  (normalizedChat, allScores) = calculateparsedChat(parsedChat)
+  railsVodId = 1
+  getTimeStamps(railsVodId, normalizedChat, allScores)
 
 
 if __name__ == "__main__":
   load_dotenv()
 
   for item in listdir():
-    fileName = item.split('.')[0]
+    fileName = os.path.split(item)[1].split('.')[0]
 
     if fileName.isdigit():
       getHighlights(fileName)
