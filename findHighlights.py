@@ -21,7 +21,7 @@ keyWords = {
     'gachigasm',
     'pepega',
     'ezclap'}
-INTERVAL_SIZE = 20 # 20 represents interval of 20 seconds
+INTERVAL_SIZE = 20  # 20 represents interval of 20 seconds
 
 
 def readFile(vodId):
@@ -77,17 +77,21 @@ def countLikeTerms(comments):
 
   return score
 
- # Calculates slope on amount of comments between 20 second intervals.
+
+# Calculates slope on amount of comments between 20 second intervals.
 def calculateparsedChat(parsedChat):
   normalizedChat = []
   allScores = []
 
   for i in range(len(parsedChat) - 1):
-    time = parsedChat[i][0]
-    deriv = (parsedChat[i + 1][1] - parsedChat[i][1]) / INTERVAL_SIZE
-    score = parsedChat[i][2] / INTERVAL_SIZE
+    currTime, currCount, currScore = parsedChat[i]
+    nextTime, nextCount, nextScore = parsedChat[i + 1]
+
+    deriv = (nextCount - currCount) / INTERVAL_SIZE
+    score = currScore / INTERVAL_SIZE
+
     allScores.append(score)
-    normalizedChat.append((time, round(deriv, 2), round(score, 2)))
+    normalizedChat.append((currTime, round(deriv, 2), round(score, 2)))
 
   return (normalizedChat, allScores)
 
